@@ -1,6 +1,94 @@
 import { useEffect, useState } from "react";
 import { JobItem, JobItemExpanded } from "./types";
 import { BASE_API_URL } from "./constants";
+import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+
+//------------------------------------------------------------------------------
+type JobItemApiResponse = {
+  public: boolean;
+  jobItem: JobItemExpanded;
+};
+
+const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
+  const response = await fetch(`${BASE_API_URL}/${id}`);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+  const data = await response.json();
+  return data;
+};
+
+export function useJobItem(id: number | null) {
+  const { data, isInitialLoading } = useQuery(
+    ["job-item", id],
+    () => (id ? fetchJobItem(id) : null),
+    {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!id,
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+  const isLoading = isInitialLoading;
+  return { jobItem: data?.jobItem, isLoading } as const;
+}
+
+//------------------------------------------------------------------------------
+type JobItemsApiResponse = {
+  public: boolean;
+  sorted: boolean;
+  jobItems: JobItem[];
+};
+
+const fetchJobItems = async (
+  searchText: string
+): Promise<JobItemsApiResponse> => {
+  const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.description);
+  }
+  const data = await response.json();
+  return data;
+};
+
+export function useJobItems(searchText: string) {
+  const { data, isInitialLoading } = useQuery(
+    ["job-items", searchText],
+    () => fetchJobItems(searchText),
+    {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!searchText,
+
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+
+  const isLoading = isInitialLoading;
+  return { jobItems: data?.jobItems, isLoading } as const;
+}
+//------------------------------------------------------------------------------
+
+export function useDebounce<T>(value: T, delay = 500): T {
+  const [deboucedValue, setDeboucedValue] = useState(value);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDeboucedValue(value);
+    }, delay);
+    return () => clearTimeout(timerId);
+  }, [value, delay]);
+  return deboucedValue;
+}
 
 export function useActiveId() {
   const [activeId, setAcitveId] = useState<number | null>(null);
@@ -21,63 +109,4 @@ export function useActiveId() {
   }, []);
 
   return activeId;
-}
-
-export function useJobItem(id: number | null) {
-  const [jobItem, setJobItem] = useState<JobItemExpanded | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      const response = await fetch(`${BASE_API_URL}/${id}`);
-      const data = await response.json();
-      setIsLoading(false);
-      setJobItem(data.jobItem);
-    };
-
-    fetchData();
-  }, [id]);
-
-  return { jobItem, isLoading } as const;
-}
-
-export function useJobItems(searchText: string) {
-  const [jobItems, setJobItems] = useState<JobItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const totalNumberOfResults = jobItems.length;
-
-  const jobItemsSliced = jobItems.slice(0, 7);
-
-  useEffect(() => {
-    if (!searchText) {
-      setJobItems([]);
-      return;
-    }
-    const fetchData = async () => {
-      setIsLoading(true);
-      const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
-      const data = await response.json();
-      setIsLoading(false);
-      setJobItems(data.jobItems);
-    };
-
-    fetchData();
-  }, [searchText]);
-
-  return { jobItemsSliced, isLoading, totalNumberOfResults } as const;
-}
-
-export function useDebounce<T>(value: T, delay = 500): T {
-  const [deboucedValue, setDeboucedValue] = useState(value);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      setDeboucedValue(value);
-    }, delay);
-    return () => clearTimeout(timerId);
-  }, [value, delay]);
-  return deboucedValue;
 }
