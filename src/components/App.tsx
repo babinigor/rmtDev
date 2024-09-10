@@ -14,6 +14,7 @@ import PaginationControls from "./PaginationControls";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import { Toaster } from "react-hot-toast";
+import { RESULTS_PER_PAGE } from "../lib/constants";
 
 function App() {
   // state
@@ -24,7 +25,12 @@ function App() {
 
   // derived / computed state
   const totalNumberOfResults = jobItems?.length || 0;
-  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const totalNumberOfPages = Math.ceil(totalNumberOfResults / RESULTS_PER_PAGE);
+  const jobItemsSliced =
+    jobItems?.slice(
+      currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
+      currentPage * RESULTS_PER_PAGE
+    ) || [];
 
   // event handlers / actions
   const handleChangePage = (direction: "next" | "prev") => {
@@ -60,6 +66,7 @@ function App() {
           <PaginationControls
             onClick={handleChangePage}
             currentPage={currentPage}
+            totalNumberOfPages={totalNumberOfPages}
           />
         </Sidebar>
 
