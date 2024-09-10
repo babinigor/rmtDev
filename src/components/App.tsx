@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDebounce, useJobItems } from "../lib/hooks";
+import { useDebounce, useSearchQuery } from "../lib/hooks";
 import Background from "./Background";
 import Header, { HeaderTop } from "./Header";
 import Container from "./Container";
@@ -21,7 +21,7 @@ function App() {
   // state
   const [searchText, setSearchText] = useState("");
   const deboucedSearchText = useDebounce(searchText, 250);
-  const { jobItems, isLoading } = useJobItems(deboucedSearchText);
+  const { jobItems, isLoading } = useSearchQuery(deboucedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortBy>("relevant");
 
