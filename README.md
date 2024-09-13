@@ -1,27 +1,11 @@
-# React + TypeScript + Vite
+# rmtDev
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## TO SEE THE RESULT, TAP ON THE PICTURE 👆
 
-Currently, two official plugins are available:
+<a href="https://babinigor.github.io/rmtDev/"><img src="https://github.com/user-attachments/assets/23235de0-314c-4bd0-9165-ba9a7671d5c4"/></a>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to use
 
-## Expanding the ESLint configuration
+The project demonstrates the possibilities of using React & TypeScript.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Using the search engine, you can find the job you are interested in by typing, for example, "css" or "angular". Then you can add the offer you are interested in to your bookmarks. If you restart the site, the bookmarks will remain, and the ad you are interested in will be downloaded not from the server, but from the local storage.
