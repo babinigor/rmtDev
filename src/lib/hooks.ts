@@ -145,7 +145,7 @@ export function useLocalStorage<T>(
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
-  return [value, setValue] as const;
+  return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>];
 }
 
 export function useOnClickOutside(
