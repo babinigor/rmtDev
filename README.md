@@ -1,6 +1,6 @@
 # rmtDev
 ## TO SEE THE RESULT, TAP ON THE PICTURE 👆
 
-<a href="https://babinigor.github.io/rmtDev/"><img src="https://github.com/user-attachments/assets/39ea2f38-06e8-48f8-8879-2eea752f79ec"/></a>
+<a href="https://babinigor.github.io/rmtDev/"><img src="https://github.com/user-attachments/assets/23235de0-314c-4bd0-9165-ba9a7671d5c4"/></a>
 
 ## How to use
